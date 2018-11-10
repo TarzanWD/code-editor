@@ -12,23 +12,18 @@ const StyledFile = glamorous('div')({
 })
 
 const FileChildren = glamorous('div')({
-  paddingLeft: '1rem'
+  paddingLeft: '1rem',
+  display: 'flex',
+  flexDirection: 'column'
 })
 
 const File = ({ file, name }) => {
+  const thisFile = file[name]
   return (
     <React.Fragment>
       <StyledFile>
-        {file.type === 'FOLDER' ? 'folder' : 'file' } - {name}
+        {thisFile.type === 'FOLDER' ? 'folder' : 'file' } - {name}
       </StyledFile>
-      <FileChildren>
-        {
-          file.type === 'FOLDER' &&
-          Object.keys(file.children).map((file) => (
-            <File file={file.children[file]} name={file} />
-          ))
-        }
-      </FileChildren>
     </React.Fragment>
   )
 }

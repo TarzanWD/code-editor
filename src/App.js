@@ -7,7 +7,7 @@ export default class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      opened: 'node_modules/abc/index.js',
+      opened: ['node_modules', 'abc', 'index.js'],
       files: {
         'node_modules': {
           type: 'FOLDER',
@@ -28,8 +28,7 @@ export default class App extends React.Component {
   }
 
   getFile () {
-    const openedAdress = this.state.opened.split('/')
-    return openedAdress.reduce((acc, part) => {
+    return this.state.opened.reduce((acc, part) => {
       return acc.children ? acc.children[part] : acc[part]
     }, this.state.files)
   }
@@ -38,7 +37,7 @@ export default class App extends React.Component {
     return (
       <div className='App'>
         <div className='files'>
-          <File file={this.state.files} name='main' />
+          <File file={this.state.files} name='node_modules' />
         </div>
         <Editor file={this.getFile()} />
       </div>
