@@ -34,7 +34,7 @@ const File = ({ file, name, addNewFile, path, openFile }) => {
 
   return (
     <React.Fragment>
-      <StyledFile onClick={() => openFile(path)}>
+      <StyledFile onClick={() => !isFolder ? openFile(path) : ''}>
         <div>
           {isFolder ? (
             <i className='fas fa-folder' style={{marginRight: '1rem'}} />
@@ -69,6 +69,7 @@ const File = ({ file, name, addNewFile, path, openFile }) => {
               name={file}
               path={[...path, file]}
               addNewFile={addNewFile}
+              openFile={openFile}
             />
           ))
         }
