@@ -20,13 +20,11 @@ export default class App extends React.Component {
       opened: null,
       files: null,
     }
-    this.addNewFile = this.addNewFile.bind(this)
   }
 
   componentDidMount() {
     socket.emit('getCurrentState')
     socket.on('onGetCurrentState', ({ files, opened }) => {
-      console.log({ files, opened })
       this.setState({ files, opened })
     })
     socket.on('onUpdateFile', data => {
@@ -37,6 +35,16 @@ export default class App extends React.Component {
     socket.on('onDeleteFile', data => {
       this.setState({
         files: R.dissocPath(data.path, this.state.files)
+      })
+    })
+
+    socket.on('onCreateFile', ({ path, name }) => {
+      this.setState({
+        files: R.assocPath(
+          [...path, 'children', name],
+          { type: 'FILE', content: '' },
+          this.state.files
+        )
       })
     })
   }
@@ -76,7 +84,15 @@ export default class App extends React.Component {
   }
 
   addNewFile = (path) => {
+    const newName = `${Math.floor(Math.random() * 10000)}.js`
+
     const fullPath = getPathWIthChildren(path)
+    socket.emit('createFile', {
+      path: fullPath,
+      name: newName
+    })
+    
+    /*
     const children = R.path([...fullPath, 'children'], this.state.files)
     this.setState((prevState) => R.assocPath([...fullPath, 'children'], {
       ...children,
@@ -85,9 +101,11 @@ export default class App extends React.Component {
         content: 'Helo'
       }
     }, prevState.files))
+    */
   }
 
   render () {
+    console.log(this.state)
     if (R.isNil(this.state.opened) || R.isNil(this.state.files)) {
       return <div className='App' style={{ color: '#fff' }}>
         loading your workspace
