@@ -47,6 +47,21 @@ export default class App extends React.Component {
         )
       })
     })
+
+    socket.on('onRenameFile', (data) => {
+      const fileToRename = R.path(data.path, this.state.files)
+      const removedSmth = R.dissocPath(data.path, this.state.files)
+      this.setState({
+        files: R.assocPath(
+          [...R.init(data.path), data.newName],
+          fileToRename,
+          removedSmth
+        )
+      })
+
+      console.log('___onRenameFile')
+      console.log(data)
+    })
   }
 
   onChangeCode = (newCode) => {
@@ -83,6 +98,12 @@ export default class App extends React.Component {
     socket.emit('deleteFile', { path: pathWithChildren })
   }
 
+  renameFile = (path, newName) => {
+    const pathWithChildren = getPathWIthChildren(path)
+    console.log(newName)
+    socket.emit('renameFile', { path: pathWithChildren, newName })
+  }
+
   addNewFile = (path) => {
     const newName = `${Math.floor(Math.random() * 10000)}.js`
 
@@ -109,6 +130,7 @@ export default class App extends React.Component {
             addNewFile={this.addNewFile}
             path={['project1']}
             openFile={this.openFile}
+            renameFile={this.renameFile}
             deleteFile={this.deleteFile}
             opened={this.state.opened}
           />

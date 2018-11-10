@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import glamorous from 'glamorous'
-import { Menu, Item, MenuProvider } from 'react-contexify';
-import 'react-contexify/dist/ReactContexify.min.css';
 import * as R from 'ramda'
 const StyledFile = glamorous('div')({
   display: 'flex',
@@ -29,14 +27,8 @@ const IconButton = glamorous('button')({
   color: '#fff'
 })
 
-// create your menu first
-const MyAwesomeMenu = () => (
-  <Menu id='menu_id'>
-    <Item onClick={() => console.log('y')}>Delete file</Item>
-  </Menu>
-);
 
-const File = ({ file, name, addNewFile, path, openFile, deleteFile, opened }) => {
+const File = ({ file, name, addNewFile, path, openFile, deleteFile, opened, renameFile }) => {
   const thisFile = file[name]
   if (!thisFile) {
     return <div />
@@ -56,6 +48,11 @@ const File = ({ file, name, addNewFile, path, openFile, deleteFile, opened }) =>
             )}
             {name}
           </div>
+          {!isFolder && (
+            <IconButton onClick={() => renameFile(path, `${Math.floor(Math.random() * 10000)}.js`)}>
+              <i className="far fa-edit"></i>
+            </IconButton>
+          )}
           <div>
             {isFolder &&
               <React.Fragment>
@@ -97,6 +94,7 @@ const File = ({ file, name, addNewFile, path, openFile, deleteFile, opened }) =>
                 openFile={openFile}
                 deleteFile={deleteFile}
                 opened={opened}
+                renameFile={renameFile}
               />
             ))
           }
