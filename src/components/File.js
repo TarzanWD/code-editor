@@ -6,7 +6,6 @@ const StyledFile = glamorous('div')({
   justifyContent: 'space-between',
   padding: '0.25rem 1rem',
   color: '#fff',
-  borderBottom: '0.05rem solid #fff',
   cursor: 'pointer',
   ':hover': {
     background: '#373a49'
@@ -19,6 +18,15 @@ const FileChildren = glamorous('div')({
   flexDirection: 'column'
 })
 
+const IconButton = glamorous('button')({
+  cursor: 'pointer',
+  marginRight: '0.5rem',
+  background: 'transparent',
+  border: 0,
+  padding: 0,
+  color: '#fff'
+})
+
 const File = ({ file, name, addNewFile, path }) => {
   const thisFile = file[name]
   const [showChildren, setShowChildren] = useState(true)
@@ -27,16 +35,26 @@ const File = ({ file, name, addNewFile, path }) => {
   return (
     <React.Fragment>
       <StyledFile>
-        {name}
+        <div>
+          {isFolder ? (
+            <i class='fas fa-folder' style={{marginRight: '1rem'}} />
+          ) : (
+            <i class='far fa-file' style={{marginRight: '1rem'}} />
+          )}
+          {name}
+        </div>
         {isFolder &&
-          <React.Fragment>
-            <button onClick={() => setShowChildren(!showChildren)}>
-              \|
-            </button>
-            <button onClick={() => addNewFile(path)}>
-              +
-            </button>
-          </React.Fragment>
+          <div>
+            <IconButton
+              onClick={() => setShowChildren(!showChildren)}>
+              {showChildren
+                ? <i class='fas fa-chevron-down' />
+                : <i class='fas fa-chevron-up' />}
+            </IconButton>
+            <IconButton>
+              <i class='fas fa-plus' />
+            </IconButton>
+          </div>
         }
       </StyledFile>
       <FileChildren>

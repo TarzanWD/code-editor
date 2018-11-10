@@ -60,7 +60,11 @@ export default class App extends React.Component {
     }, this.state.files)
   }
 
-  addNewFile (path) {
+  openFile = () => {
+
+  }
+
+  addNewFile  = (path) => {
     const fullPath = getPathWIthChildren(path)
     const children = R.path(fullPath)
     console.log(path)
