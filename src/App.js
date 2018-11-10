@@ -65,17 +65,10 @@ export default class App extends React.Component {
     this.setState({ opened: path })
   }
 
-  addNewFile (path) {
-    console.log('works')
+  addNewFile = (path) => {
     const fullPath = getPathWIthChildren(path)
     const children = R.path(fullPath)
-    /*this.setState({
-      files: R.assocPath(
-        fullPath,
-        data.newContent,
-        this.state
-      )
-    })*/
+    console.log(children)
   }
 
   render () {
@@ -93,7 +86,7 @@ export default class App extends React.Component {
             name='node_modules'
             addNewFile={this.addNewFile}
             path={['node_modules']}
-            openFile={() => this.openFile()}
+            openFile={this.openFile}
           />
         </div>
         <Editor
