@@ -38,6 +38,9 @@ const MyAwesomeMenu = () => (
 
 const File = ({ file, name, addNewFile, path, openFile, deleteFile }) => {
   const thisFile = file[name]
+  if (!thisFile) {
+    return <div />
+  }
   const [showChildren, setShowChildren] = useState(true)
   const isFolder = thisFile.type === 'FOLDER'
 
@@ -54,7 +57,7 @@ const File = ({ file, name, addNewFile, path, openFile, deleteFile }) => {
               <MyAwesomeMenu />
             </>
           )*/}
-          <button onClick={() => deleteFile(path)}>delete me</button>
+          <button onClick={() => deleteFile(path)}>del</button>
           {isFolder ? (
             <i className='fas fa-folder' style={{marginRight: '1rem'}} />
           ) : (
