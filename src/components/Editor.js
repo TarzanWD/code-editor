@@ -8,6 +8,10 @@ export default ({ file }) => {
   }
 
   return (
-    <textarea className='editor' value={code} onChange={(e) => handleEditorChange(e)} />
+    <textarea
+      className='editor'
+      value={code}
+      onChange={(e) => handleEditorChange(e)}
+    />
   )
 }

@@ -23,14 +23,23 @@ const AddNewInput = glamorous('input')({
 })
 
 export default () => {
-  const [files, setFiles] = useState([
-    {
-      name: 'abc'
+  const [files, setFiles] = useState({
+    node_modules: {
+      type: 'FOLDER',
+      children: {
+        'index.js': {
+          type: 'FILE',
+          content: 'Hello World'
+        }
+      }
     }
-  ])
-  const [newFile, setNewFile] = useState({
-    name: 'Abc'
   })
+  const [newFile, setNewFile] = useState({
+    name: '',
+    value: ''
+  })
+
+  const [openedFile] = useState(null)
 
   const handleNewFileInputChange = (e) => {
     setNewFile({
@@ -39,7 +48,6 @@ export default () => {
   }
 
   const addNewFile = () => {
-    console.log('works')
     setFiles([
       ...files,
       {
@@ -47,7 +55,6 @@ export default () => {
         value: ''
       }
     ])
-    console.log(files)
   }
   return (
     <div className='App'>
@@ -62,9 +69,7 @@ export default () => {
           <File name={file.name} />
         ))}
       </div>
-      <Editor file={{
-
-      }}/>
+      <Editor file={files[openedFile]} />
     </div>
   )
 }
