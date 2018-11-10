@@ -37,7 +37,8 @@ export default class App extends React.Component {
   }
 
   onChangeCode = (e) => {
-    const newCode = e.target.value
+    console.log(e)
+    const newCode = e.target.innerText
     console.log(newCode)
     const pathWithChildren = getPathWIthChildren(this.state.opened)
     socket.emit('updateFile', {
