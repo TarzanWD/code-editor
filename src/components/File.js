@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import glamorous from 'glamorous'
 import { Menu, Item, MenuProvider } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.min.css';
-
+import * as R from 'ramda'
 const StyledFile = glamorous('div')({
   display: 'flex',
   justifyContent: 'space-between',
@@ -10,7 +10,7 @@ const StyledFile = glamorous('div')({
   color: '#fff',
   cursor: 'pointer',
   ':hover': {
-    background: '#373a49'
+    background: 'rgba(55, 58, 73, 0.3)'
   }
 })
 
@@ -36,72 +36,73 @@ const MyAwesomeMenu = () => (
   </Menu>
 );
 
-const File = ({ file, name, addNewFile, path, openFile, deleteFile }) => {
+const File = ({ file, name, addNewFile, path, openFile, deleteFile, opened }) => {
   const thisFile = file[name]
   if (!thisFile) {
     return <div />
   }
   const [showChildren, setShowChildren] = useState(true)
   const isFolder = thisFile.type === 'FOLDER'
-
+  const isCurrentActiveFile = R.equals(opened, path)
   return (
-    <React.Fragment>
-      <StyledFile onClick={() => !isFolder ? openFile(path) : ''}>
-        <div>
-          {/*!isFolder && (
-            <>
-              <MenuProvider id="menu_id" style={{ border: '1px solid purple', display: 'inline-block' }}>
-                Right click me...
-              </MenuProvider>
-              <MyAwesomeMenu />
-            </>
-          )*/}
-          <button onClick={() => deleteFile(path)}>del</button>
-          {isFolder ? (
-            <i className='fas fa-folder' style={{marginRight: '1rem'}} />
-          ) : (
-            <i className='far fa-file' style={{marginRight: '1rem'}} />
-          )}
-          {name}
-        </div>
-        {isFolder &&
-          <div>
-            <IconButton
-              onClick={() => setShowChildren(!showChildren)}>
-              {showChildren
-                ? <i className='fas fa-chevron-down' />
-                : <i className='fas fa-chevron-up' />}
-            </IconButton>
-            <IconButton
-              onClick={() => addNewFile(path)}>
-              <i className='fas fa-plus' />
-            </IconButton>
-            {/*
-            <IconButton>
-              <i className='fas fa-plus' />
-            </IconButton>
-            */}
+    <div  {...(isCurrentActiveFile ? { style: { background: 'rgba(255, 40, 30, 0.5)' } } : {} )}>
+      <React.Fragment>
+        <StyledFile onClick={() => !isFolder ? openFile(path) : ''}>
+          <div {...(isCurrentActiveFile ? { background: '#444' } : {} )}>
+            {isFolder ? (
+              <i className='fas fa-folder' style={{marginRight: '1rem'}} />
+            ) : (
+              <i className='far fa-file' style={{marginRight: '1rem'}} />
+            )}
+            {name}
           </div>
-        }
-      </StyledFile>
-      <FileChildren>
-        {
-          isFolder &&
-          showChildren &&
-          Object.keys(thisFile.children).map((file, index) => (
-            <File
-              key={index}
-              file={thisFile.children}
-              name={file}
-              path={[...path, file]}
-              addNewFile={addNewFile}
-              openFile={openFile}
-              deleteFile={deleteFile}
-            />
-          ))
-        }
-      </FileChildren>
-    </React.Fragment>
+          <div>
+            {isFolder &&
+              <React.Fragment>
+                <IconButton
+                  onClick={() => setShowChildren(!showChildren)}>
+                  {showChildren
+                    ? <i className='fas fa-chevron-down' />
+                    : <i className='fas fa-chevron-up' />}
+                </IconButton>
+                <IconButton
+                  onClick={() => addNewFile(path)}>
+                  <i className='fas fa-plus' />
+                </IconButton>
+                {/*
+                <IconButton>
+                  <i className='fas fa-folder-plus' />
+                </IconButton>
+                */}
+              </React.Fragment>
+            }
+            {!isFolder &&
+              <IconButton onClick={() => deleteFile(path)}>
+                <i className='fas fa-ban' />
+              </IconButton>
+            }
+          </div>
+        </StyledFile>
+        <FileChildren>
+          {
+            isFolder &&
+            showChildren &&
+            Object.keys(thisFile.children).map((file, index) => (
+              <File
+                key={index}
+                file={thisFile.children}
+                name={file}
+                path={[...path, file]}
+                addNewFile={addNewFile}
+                openFile={openFile}
+                deleteFile={deleteFile}
+                opened={opened}
+              />
+            ))
+          }
+        </FileChildren>
+      </React.Fragment>
+    </div>
   )
 }
 

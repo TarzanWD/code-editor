@@ -117,11 +117,12 @@ export default class App extends React.Component {
         <div className='files'>
           <File
             file={this.state.files}
-            name='node_modules'
+            name='project1'
             addNewFile={this.addNewFile}
-            path={['node_modules']}
+            path={['project1']}
             openFile={this.openFile}
             deleteFile={this.deleteFile}
+            opened={this.state.opened}
           />
         </div>
         <Editor
