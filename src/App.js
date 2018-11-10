@@ -20,7 +20,6 @@ export default class App extends React.Component {
       opened: null,
       files: null,
     }
-    this.addNewFile = this.addNewFile.bind(this)
   }
 
   componentDidMount() {

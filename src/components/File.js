@@ -56,7 +56,6 @@ const File = ({ file, name, addNewFile, path, openFile, deleteFile }) => {
               <MyAwesomeMenu />
             </>
           )*/}
-          <button onClick={() => deleteFile(path)}>del</button>
           {isFolder ? (
             <i className='fas fa-folder' style={{marginRight: '1rem'}} />
           ) : (
@@ -77,7 +76,10 @@ const File = ({ file, name, addNewFile, path, openFile, deleteFile }) => {
               <i className='fas fa-plus' />
             </IconButton>
             <IconButton>
-              <i className='fas fa-plus' />
+              <i className='fas fa-folder-plus' />
+            </IconButton>
+            <IconButton onClick={() => deleteFile(path)}>
+              <i class='fas fa-ban' />
             </IconButton>
           </div>
         }
