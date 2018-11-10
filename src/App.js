@@ -91,21 +91,9 @@ export default class App extends React.Component {
       path: fullPath,
       name: newName
     })
-    
-    /*
-    const children = R.path([...fullPath, 'children'], this.state.files)
-    this.setState((prevState) => R.assocPath([...fullPath, 'children'], {
-      ...children,
-      'app.js': {
-        type: 'FOLDER',
-        content: 'Helo'
-      }
-    }, prevState.files))
-    */
   }
 
   render () {
-    console.log(this.state)
     if (R.isNil(this.state.opened) || R.isNil(this.state.files)) {
       return <div className='App' style={{ color: '#fff' }}>
         loading your workspace
