@@ -67,8 +67,14 @@ export default class App extends React.Component {
 
   addNewFile = (path) => {
     const fullPath = getPathWIthChildren(path)
-    const children = R.path(fullPath)
-    console.log(children)
+    const children = R.path([...fullPath, 'children'], this.state.files)
+    this.setState((prevState) => R.assocPath([...fullPath, 'children'], {
+      ...children,
+      'app.js': {
+        type: 'FOLDER',
+        content: 'Helo'
+      }
+    }, prevState.files))
   }
 
   render () {

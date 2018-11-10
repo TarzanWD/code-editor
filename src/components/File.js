@@ -55,6 +55,9 @@ const File = ({ file, name, addNewFile, path, openFile }) => {
               onClick={() => addNewFile(path)}>
               <i className='fas fa-plus' />
             </IconButton>
+            <IconButton>
+              <i className='fas fa-plus' />
+            </IconButton>
           </div>
         }
       </StyledFile>
