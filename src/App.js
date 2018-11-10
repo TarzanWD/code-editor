@@ -34,6 +34,11 @@ export default class App extends React.Component {
         files: R.assocPath([...data.path, 'content'], data.newContent, this.state.files)
       })
     })
+    socket.on('onDeleteFile', data => {
+      this.setState({
+        files: R.dissocPath(data.path, this.state.files)
+      })
+    })
   }
 
   onChangeCode = (newCode) => {
@@ -65,6 +70,11 @@ export default class App extends React.Component {
     this.setState({ opened: path })
   }
 
+  deleteFile = (path) => {
+    const pathWithChildren = getPathWIthChildren(this.state.opened)
+    socket.emit('deleteFile', { path: pathWithChildren })
+  }
+
   addNewFile = (path) => {
     const fullPath = getPathWIthChildren(path)
     const children = R.path([...fullPath, 'children'], this.state.files)
@@ -93,6 +103,7 @@ export default class App extends React.Component {
             addNewFile={this.addNewFile}
             path={['node_modules']}
             openFile={this.openFile}
+            deleteFile={this.deleteFile}
           />
         </div>
         <Editor

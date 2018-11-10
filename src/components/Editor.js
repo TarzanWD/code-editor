@@ -5,6 +5,9 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 
 export default ({ lang, onChangeCode, code }) => {
+  if (!code) {
+    return <div />
+  }
   return (
     <div style={{ background: '#f5f2f0' }}>
       <Editor
