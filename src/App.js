@@ -35,10 +35,9 @@ export default class App extends React.Component {
     })
   }
 
-  onChangeCode = (e) => {
-    console.log(e)
-    const newCode = e.target.innerText
+  onChangeCode = (newCode) => {
     const pathWithChildren = getPathWIthChildren(this.state.opened)
+    console.log('onChangeCode')
     console.log({
       path: pathWithChildren,
       newContent: newCode
@@ -52,6 +51,13 @@ export default class App extends React.Component {
   getCurrentContent = () => {
     const pathWithChildren = getPathWIthChildren(this.state.opened)
     return R.path([...pathWithChildren, 'content'], this.state.files)
+  }
+ 
+  getCurrentFileExtension = () => {
+    const fileName = R.last(this.state.opened)
+    const fileExtension = fileName.split('.')[1] || ''
+    console.log(fileExtension)
+    return fileExtension
   }
 
   getFile () {
@@ -91,6 +97,7 @@ export default class App extends React.Component {
           />
         </div>
         <Editor
+          lang={this.getCurrentFileExtension()}
           code={this.getCurrentContent()}
           onChangeCode={this.onChangeCode}
         />
