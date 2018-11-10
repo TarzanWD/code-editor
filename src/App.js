@@ -20,6 +20,15 @@ export default class App extends React.Component {
                   content: 'Hello World'
                 }
               }
+            },
+            'def': {
+              type: 'FOLDER',
+              children: {
+                'index.js': {
+                  type: 'FILE',
+                  content: 'Hello World'
+                }
+              }
             }
           }
         }
@@ -33,11 +42,15 @@ export default class App extends React.Component {
     }, this.state.files)
   }
 
+  addNewFile () {
+    console.log('works')
+  }
+
   render () {
     return (
       <div className='App'>
         <div className='files'>
-          <File file={this.state.files} name='node_modules' />
+          <File file={this.state.files} name='node_modules' addNew={this.addNewFile} />
         </div>
         <Editor file={this.getFile()} />
       </div>
