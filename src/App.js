@@ -36,14 +36,8 @@ export default class App extends React.Component {
     })
   }
 
-  onChangeCode = (e) => {
-    console.log(e)
-    const newCode = e.target.innerText
+  onChangeCode = (newCode) => {
     const pathWithChildren = getPathWIthChildren(this.state.opened)
-    console.log({
-      path: pathWithChildren,
-      newContent: newCode
-    })
     socket.emit('updateFile', {
       path: pathWithChildren,
       newContent: newCode
@@ -53,6 +47,12 @@ export default class App extends React.Component {
   getCurrentContent = () => {
     const pathWithChildren = getPathWIthChildren(this.state.opened)
     return R.path([...pathWithChildren, 'content'], this.state.files)
+  }
+ 
+  getCurrentFileExtension = () => {
+    const fileName = R.last(this.state.opened)
+    const fileExtension = fileName.split('.')[1] || ''
+    return fileExtension
   }
 
   getFile () {
@@ -69,7 +69,6 @@ export default class App extends React.Component {
     console.log('works')
     const fullPath = getPathWIthChildren(path)
     const children = R.path(fullPath)
-    console.log(path)
     /*this.setState({
       files: R.assocPath(
         fullPath,
@@ -98,6 +97,7 @@ export default class App extends React.Component {
           />
         </div>
         <Editor
+          lang={this.getCurrentFileExtension()}
           code={this.getCurrentContent()}
           onChangeCode={this.onChangeCode}
         />
