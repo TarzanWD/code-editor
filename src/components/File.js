@@ -63,7 +63,13 @@ const File = ({ file, name, addNewFile, path, openFile }) => {
           isFolder &&
           showChildren &&
           Object.keys(thisFile.children).map((file, index) => (
-            <File key={index} file={thisFile.children} name={file} path={[...path, file]} />
+            <File
+              key={index}
+              file={thisFile.children}
+              name={file}
+              path={[...path, file]}
+              addNewFile={addNewFile}
+            />
           ))
         }
       </FileChildren>
