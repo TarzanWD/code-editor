@@ -17,55 +17,30 @@ export default class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      opened: ['node_modules', 'abc', 'index.js'],
-      files: {
-        'node_modules': {
-          type: 'FOLDER',
-          children: {
-            'abc': {
-              type: 'FOLDER',
-              children: {
-                'index.js': {
-                  type: 'FILE',
-                  content: 'Hello World'
-                }
-              }
-            },
-            'def': {
-              type: 'FOLDER',
-              children: {
-                'index.js': {
-                  type: 'FILE',
-                  content: 'Hello World'
-                }
-              }
-            }
-          }
-        }
-      }
+      opened: null,
+      files: null,
     }
   }
 
   componentDidMount() {
+    socket.emit('getCurrentState')
+    socket.on('onGetCurrentState', ({ files, opened }) => {
+      console.log({ files, opened })
+      this.setState({ files, opened })
+    })
     socket.on('onUpdateFile', data => {
       console.log(data)
       this.setState({
-        files: R.assocPath(
-          [...data.path, 'content'],
-          data.newContent,
-          this.state
-        )
+        files: R.assocPath([...data.path, 'content'], data.newContent, this.state)
       })
     })
   }
 
   onChangeCode = (e) => {
-    const newCode = e.target.value
+    console.log(e)
+    const newCode = e.target.innerText
     console.log(newCode)
     const pathWithChildren = getPathWIthChildren(this.state.opened)
-    // this.setState({
-    //   files: R.assocPath(pathWithChildren, newCode, this.state.files)
-    // })
     socket.emit('updateFile', {
       path: pathWithChildren,
       newContent: newCode
@@ -97,6 +72,12 @@ export default class App extends React.Component {
   }
 
   render () {
+    if (R.isNil(this.state.opened) || R.isNil(this.state.files)) {
+      return <div className='App' style={{ color: '#fff' }}>
+        loading your workspace
+      </div>
+    }
+    
     return (
       <div className='App'>
         <div className='files'>
@@ -108,7 +89,6 @@ export default class App extends React.Component {
           />
         </div>
         <Editor
-          file={this.getFile()}
           code={this.getCurrentContent()}
           onChangeCode={this.onChangeCode}
         />
