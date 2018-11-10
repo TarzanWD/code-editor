@@ -126,6 +126,7 @@ export default class App extends React.Component {
           />
         </div>
         <Editor
+          filePath={this.state.opened}
           lang={this.getCurrentFileExtension()}
           code={this.getCurrentContent()}
           onChangeCode={this.onChangeCode}
