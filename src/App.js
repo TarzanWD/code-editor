@@ -17,12 +17,15 @@ export default class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      opened: null,
+      files: null,
+      /*
       opened: ['node_modules', 'abc', 'index.js'],
       files: {
-        'node_modules': {
+        node_modules: {
           type: 'FOLDER',
           children: {
-            'abc': {
+            src: {
               type: 'FOLDER',
               children: {
                 'index.js': {
@@ -34,18 +37,20 @@ export default class App extends React.Component {
           }
         }
       }
+        */
     }
   }
 
   componentDidMount() {
+    socket.emit('getCurrentState')
+    socket.on('onGetCurrentState', ({ files, opened }) => {
+      console.log({ files, opened })
+      this.setState({ files, opened })
+    })
     socket.on('onUpdateFile', data => {
       console.log(data)
       this.setState({
-        files: R.assocPath(
-          [...data.path, 'content'],
-          data.newContent,
-          this.state
-        )
+        files: R.assocPath([...data.path, 'content'], data.newContent, this.state)
       })
     })
   }
@@ -54,9 +59,6 @@ export default class App extends React.Component {
     const newCode = e.target.value
     console.log(newCode)
     const pathWithChildren = getPathWIthChildren(this.state.opened)
-    // this.setState({
-    //   files: R.assocPath(pathWithChildren, newCode, this.state.files)
-    // })
     socket.emit('updateFile', {
       path: pathWithChildren,
       newContent: newCode
@@ -68,20 +70,19 @@ export default class App extends React.Component {
     return R.path([...pathWithChildren, 'content'], this.state.files)
   }
 
-  getFile () {
-    return this.state.opened.reduce((acc, part) => {
-      return acc.children ? acc.children[part] : acc[part]
-    }, this.state.files)
-  }
-
   render () {
+    if (R.isNil(this.state.opened) || R.isNil(this.state.files)) {
+      return <div className='App' style={{ color: '#fff' }}>
+        loading your workspace
+      </div>
+    }
+    
     return (
       <div className='App'>
         <div className='files'>
           <File file={this.state.files} name='node_modules' />
         </div>
         <Editor
-          file={this.getFile()}
           code={this.getCurrentContent()}
           onChangeCode={this.onChangeCode}
         />

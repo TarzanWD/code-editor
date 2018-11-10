@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-export default ({ file, onChangeCode, code }) => {
+export default ({ onChangeCode, code }) => {
   return (
     <textarea
       className='editor'
