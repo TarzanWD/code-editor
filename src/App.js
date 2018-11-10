@@ -19,25 +19,6 @@ export default class App extends React.Component {
     this.state = {
       opened: null,
       files: null,
-      /*
-      opened: ['node_modules', 'abc', 'index.js'],
-      files: {
-        node_modules: {
-          type: 'FOLDER',
-          children: {
-            src: {
-              type: 'FOLDER',
-              children: {
-                'index.js': {
-                  type: 'FILE',
-                  content: 'Hello World'
-                }
-              }
-            }
-          }
-        }
-      }
-        */
     }
   }
 
