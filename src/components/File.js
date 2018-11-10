@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import glamorous from 'glamorous'
 
 const StyledFile = glamorous('div')({
+  display: 'flex',
+  justifyContent: 'space-between',
   padding: '0.25rem 1rem',
   color: '#fff',
   borderBottom: '0.05rem solid #fff',
@@ -17,18 +19,32 @@ const FileChildren = glamorous('div')({
   flexDirection: 'column'
 })
 
-const File = ({ file, name, addNew }) => {
+const File = ({ file, name, addNewFile, path }) => {
   const thisFile = file[name]
+  const [showChildren, setShowChildren] = useState(true)
+  const isFolder = thisFile.type === 'FOLDER'
+
   return (
     <React.Fragment>
       <StyledFile>
-        {thisFile.type === 'FOLDER' ? 'folder' : 'file' } - {name}
+        {name}
+        {isFolder &&
+          <React.Fragment>
+            <button onClick={() => setShowChildren(!showChildren)}>
+              \|
+            </button>
+            <button onClick={() => addNewFile(path)}>
+              +
+            </button>
+          </React.Fragment>
+        }
       </StyledFile>
       <FileChildren>
         {
-          thisFile.type === 'FOLDER' &&
+          isFolder &&
+          showChildren &&
           Object.keys(thisFile.children).map((file) => (
-            <File file={thisFile.children} name={file} />
+            <File file={thisFile.children} name={file} path={[...path, file]} />
           ))
         }
       </FileChildren>

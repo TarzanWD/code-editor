@@ -83,15 +83,29 @@ export default class App extends React.Component {
     }, this.state.files)
   }
 
-  addNewFile () {
-    console.log('works')
+  addNewFile (path) {
+    const fullPath = getPathWIthChildren(path)
+    const children = R.path(fullPath)
+    console.log(path)
+    /*this.setState({
+      files: R.assocPath(
+        fullPath,
+        data.newContent,
+        this.state
+      )
+    })*/
   }
 
   render () {
     return (
       <div className='App'>
         <div className='files'>
-          <File file={this.state.files} name='node_modules' addNew={this.addNewFile} />
+          <File
+            file={this.state.files}
+            name='node_modules'
+            addNewFile={this.addNewFile}
+            path={['node_modules']}
+          />
         </div>
         <Editor
           file={this.getFile()}
