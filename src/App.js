@@ -20,6 +20,7 @@ export default class App extends React.Component {
       opened: null,
       files: null,
     }
+    this.addNewFile = this.addNewFile.bind(this)
   }
 
   componentDidMount() {
@@ -60,11 +61,12 @@ export default class App extends React.Component {
     }, this.state.files)
   }
 
-  openFile = () => {
-
+  openFile = (path) => {
+    this.setState({ opened: path })
   }
 
-  addNewFile  = (path) => {
+  addNewFile (path) {
+    console.log('works')
     const fullPath = getPathWIthChildren(path)
     const children = R.path(fullPath)
     console.log(path)
@@ -92,6 +94,7 @@ export default class App extends React.Component {
             name='node_modules'
             addNewFile={this.addNewFile}
             path={['node_modules']}
+            openFile={() => this.openFile()}
           />
         </div>
         <Editor

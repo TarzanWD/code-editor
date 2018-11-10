@@ -27,14 +27,14 @@ const IconButton = glamorous('button')({
   color: '#fff'
 })
 
-const File = ({ file, name, addNewFile, path }) => {
+const File = ({ file, name, addNewFile, path, openFile }) => {
   const thisFile = file[name]
   const [showChildren, setShowChildren] = useState(true)
   const isFolder = thisFile.type === 'FOLDER'
 
   return (
     <React.Fragment>
-      <StyledFile>
+      <StyledFile onClick={() => openFile(path)}>
         <div>
           {isFolder ? (
             <i class='fas fa-folder' style={{marginRight: '1rem'}} />
@@ -51,7 +51,8 @@ const File = ({ file, name, addNewFile, path }) => {
                 ? <i class='fas fa-chevron-down' />
                 : <i class='fas fa-chevron-up' />}
             </IconButton>
-            <IconButton>
+            <IconButton
+              onClick={() => addNewFile(path)}>
               <i class='fas fa-plus' />
             </IconButton>
           </div>
