@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import glamorous from 'glamorous'
+import { Menu, Item, MenuProvider } from 'react-contexify';
+import 'react-contexify/dist/ReactContexify.min.css';
 
 const StyledFile = glamorous('div')({
   display: 'flex',
@@ -27,15 +29,32 @@ const IconButton = glamorous('button')({
   color: '#fff'
 })
 
-const File = ({ file, name, addNewFile, path, openFile }) => {
+// create your menu first
+const MyAwesomeMenu = () => (
+  <Menu id='menu_id'>
+    <Item onClick={() => console.log('y')}>Delete file</Item>
+  </Menu>
+);
+
+const File = ({ file, name, addNewFile, path, openFile, deleteFile }) => {
   const thisFile = file[name]
   const [showChildren, setShowChildren] = useState(true)
   const isFolder = thisFile.type === 'FOLDER'
 
   return (
     <React.Fragment>
+
       <StyledFile onClick={() => openFile(path)}>
         <div>
+          {/*!isFolder && (
+            <>
+              <MenuProvider id="menu_id" style={{ border: '1px solid purple', display: 'inline-block' }}>
+                Right click me...
+              </MenuProvider>
+              <MyAwesomeMenu />
+            </>
+          )*/}
+          <button onClick={() => deleteFile(path)}>delete me</button>
           {isFolder ? (
             <i className='fas fa-folder' style={{marginRight: '1rem'}} />
           ) : (
@@ -69,6 +88,7 @@ const File = ({ file, name, addNewFile, path, openFile }) => {
               name={file}
               path={[...path, file]}
               openFile={openFile}
+              deleteFile={deleteFile}
             />
           ))
         }

@@ -8,6 +8,7 @@
     "prismjs": "^1.15.0",
     "ramda": "^0.25.0",
     "react": "16.7.0-alpha.0",
+    "react-contexify": "^4.0.0",
     "react-dom": "16.7.0-alpha.0",
     "react-scripts": "2.1.1",
     "react-simple-code-editor": "^0.7.1",
