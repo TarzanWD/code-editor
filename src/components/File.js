@@ -63,26 +63,28 @@ const File = ({ file, name, addNewFile, path, openFile, deleteFile }) => {
           )}
           {name}
         </div>
-        {isFolder &&
-          <div>
-            <IconButton
-              onClick={() => setShowChildren(!showChildren)}>
-              {showChildren
-                ? <i className='fas fa-chevron-down' />
-                : <i className='fas fa-chevron-up' />}
-            </IconButton>
-            <IconButton
-              onClick={() => addNewFile(path)}>
-              <i className='fas fa-plus' />
-            </IconButton>
-            <IconButton>
-              <i className='fas fa-folder-plus' />
-            </IconButton>
-            <IconButton onClick={() => deleteFile(path)}>
-              <i class='fas fa-ban' />
-            </IconButton>
-          </div>
-        }
+        <div>
+          {isFolder &&
+            <React.Fragment>
+              <IconButton
+                onClick={() => setShowChildren(!showChildren)}>
+                {showChildren
+                  ? <i className='fas fa-chevron-down' />
+                  : <i className='fas fa-chevron-up' />}
+              </IconButton>
+              <IconButton
+                onClick={() => addNewFile(path)}>
+                <i className='fas fa-plus' />
+              </IconButton>
+              <IconButton>
+                <i className='fas fa-folder-plus' />
+              </IconButton>
+            </React.Fragment>
+          }
+          <IconButton onClick={() => deleteFile(path)}>
+            <i class='fas fa-ban' />
+          </IconButton>
+        </div>
       </StyledFile>
       <FileChildren>
         {
