@@ -29,9 +29,8 @@ export default class App extends React.Component {
       this.setState({ files, opened })
     })
     socket.on('onUpdateFile', data => {
-      console.log(data)
       this.setState({
-        files: R.assocPath([...data.path, 'content'], data.newContent, this.state)
+        files: R.assocPath([...data.path, 'content'], data.newContent, this.state.files)
       })
     })
   }
@@ -39,8 +38,11 @@ export default class App extends React.Component {
   onChangeCode = (e) => {
     console.log(e)
     const newCode = e.target.innerText
-    console.log(newCode)
     const pathWithChildren = getPathWIthChildren(this.state.opened)
+    console.log({
+      path: pathWithChildren,
+      newContent: newCode
+    })
     socket.emit('updateFile', {
       path: pathWithChildren,
       newContent: newCode
