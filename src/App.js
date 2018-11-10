@@ -37,11 +37,6 @@ export default class App extends React.Component {
 
   onChangeCode = (newCode) => {
     const pathWithChildren = getPathWIthChildren(this.state.opened)
-    console.log('onChangeCode')
-    console.log({
-      path: pathWithChildren,
-      newContent: newCode
-    })
     socket.emit('updateFile', {
       path: pathWithChildren,
       newContent: newCode
@@ -56,7 +51,6 @@ export default class App extends React.Component {
   getCurrentFileExtension = () => {
     const fileName = R.last(this.state.opened)
     const fileExtension = fileName.split('.')[1] || ''
-    console.log(fileExtension)
     return fileExtension
   }
 
@@ -69,7 +63,6 @@ export default class App extends React.Component {
   addNewFile (path) {
     const fullPath = getPathWIthChildren(path)
     const children = R.path(fullPath)
-    console.log(path)
     /*this.setState({
       files: R.assocPath(
         fullPath,
