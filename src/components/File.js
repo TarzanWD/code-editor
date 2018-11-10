@@ -37,9 +37,9 @@ const File = ({ file, name, addNewFile, path }) => {
       <StyledFile>
         <div>
           {isFolder ? (
-            <i class='fas fa-folder' style={{marginRight: '1rem'}} />
+            <i className='fas fa-folder' style={{marginRight: '1rem'}} />
           ) : (
-            <i class='far fa-file' style={{marginRight: '1rem'}} />
+            <i className='far fa-file' style={{marginRight: '1rem'}} />
           )}
           {name}
         </div>
@@ -48,11 +48,11 @@ const File = ({ file, name, addNewFile, path }) => {
             <IconButton
               onClick={() => setShowChildren(!showChildren)}>
               {showChildren
-                ? <i class='fas fa-chevron-down' />
-                : <i class='fas fa-chevron-up' />}
+                ? <i className='fas fa-chevron-down' />
+                : <i className='fas fa-chevron-up' />}
             </IconButton>
             <IconButton>
-              <i class='fas fa-plus' />
+              <i className='fas fa-plus' />
             </IconButton>
           </div>
         }
