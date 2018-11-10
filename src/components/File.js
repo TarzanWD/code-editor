@@ -11,10 +11,26 @@ const StyledFile = glamorous('div')({
   }
 })
 
-export default ({ name }) => {
+const FileChildren = glamorous('div')({
+  paddingLeft: '1rem'
+})
+
+const File = ({ file, name }) => {
   return (
-    <StyledFile>
-      {name}
-    </StyledFile>
+    <React.Fragment>
+      <StyledFile>
+        {file.type === 'FOLDER' ? 'folder' : 'file' } - {name}
+      </StyledFile>
+      <FileChildren>
+        {
+          file.type === 'FOLDER' &&
+          Object.keys(file.children).map((file) => (
+            <File file={file.children[file]} name={file} />
+          ))
+        }
+      </FileChildren>
+    </React.Fragment>
   )
 }
+
+export default File
